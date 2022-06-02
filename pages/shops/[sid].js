@@ -1,31 +1,38 @@
+
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 
-export const getStaticProps = async () => {
+export const getStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { sid: '1' } },
+      { params: { sid: '2' } },
+      { params: { sid: '3' } },
+    ],
+    fallback: false,
+  }
+}
+
+export const getStaticProps = async ({ params }) => {
+  console.log(params)
+  const id = params.sid
   let rand = Math.floor(Math.random() * 100)
   return {
     props: {
       name: 'John Doe',
       age: '32',
-      rand: rand
+      rand: rand,
+      id: id,
     },
     revalidate: 10,
   }
 }
 
-// ! Dynamic Routesのみ。これはエラーになってしまう。
-// export const getStaticPaths = async () => {
-//   return {
-//     paths: [],
-//     fallback: false,
-//   }
-// }
 
 
 
 
-export default function Home({ name, age, rand }) {
+export default function Home({ name, age, rand, id }) {
   return (
     <div className="">
       <Head>
@@ -42,6 +49,10 @@ export default function Home({ name, age, rand }) {
         <p>
           Random number: {rand}
         </p>
+        <p>
+          ID: {id}
+        </p>
+
       </div>
 
     </div>
